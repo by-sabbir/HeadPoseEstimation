@@ -9,7 +9,11 @@ Using the package manager [pip](https://pip.pypa.io/en/stable/).
 ```bash
 pip install -r requirements.txt
 ```
-
+```bash
+cd models
+bash downloader.sh
+cd ..
+```
 ## Usage
 #### Get Pose From Image
 ```
