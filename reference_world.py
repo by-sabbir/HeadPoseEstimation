@@ -20,8 +20,8 @@ def ref2dImagePoints(shape):
     return np.array(imagePoints, dtype=np.float64)
 
 
-def CameraMatrix(fl, center):
-    cameraMatrix = [[fl, 1, center[0]],
+def cameraMatrix(fl, center):
+    mat = [[fl, 1, center[0]],
                     [0, fl, center[1]],
                     [0, 0, 1]]
-    return np.array(cameraMatrix, dtype=np.float)
+    return np.array(mat, dtype=np.float)

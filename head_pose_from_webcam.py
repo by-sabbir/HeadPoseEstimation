@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import cv2
+import sys
 import dlib
 import argparse
 import numpy as np
@@ -10,6 +11,10 @@ from drawFace import draw
 import reference_world as world
 
 PREDICTOR_PATH = os.path.join("models", "shape_predictor_68_face_landmarks.dat")
+
+if not os.path.isfile(PREDICTOR_PATH):
+    print("[ERROR] USE models/downloader.sh to download the predictor")
+    sys.exit()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--focal",
@@ -42,9 +47,9 @@ def main(source=0):
 
             refImgPts = world.ref2dImagePoints(shape)
 
-            rows, cols, ch = img.shape
-            focalLength = args.focal * cols
-            cameraMatrix = world.CameraMatrix(focalLength, (rows / 2, cols / 2))
+            height, width, channels = img.shape
+            focalLength = args.focal * width
+            cameraMatrix = world.cameraMatrix(focalLength, (height / 2, width / 2))
 
             mdists = np.zeros((4, 1), dtype=np.float64)
 
@@ -62,7 +67,7 @@ def main(source=0):
             cv2.line(img, p1, p2, (110, 220, 0),
                      thickness=2, lineType=cv2.LINE_AA)
 
-            # calculating angle
+            # calculating euler angles
             rmat, jac = cv2.Rodrigues(rotationVector)
             angles, mtxR, mtxQ, Qx, Qy, Qz = cv2.RQDecomp3x3(rmat)
 
