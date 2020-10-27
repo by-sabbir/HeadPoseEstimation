@@ -70,6 +70,17 @@ def main(image):
             # calculating angle
             rmat, jac = cv2.Rodrigues(rotationVector)
             angles, mtxR, mtxQ, Qx, Qy, Qz = cv2.RQDecomp3x3(rmat)
+            
+            print('*' * 80)
+            print("Angle: ", angles)
+            # print(f"Qx:{Qx}\tQy:{Qy}\tQz:{Qz}\t")
+            x = np.arctan2(Qx[2][1], Qx[2][2])
+            y = np.arctan2(-Qy[2][0], np.sqrt((Qy[2][1] * Qy[2][1] ) + (Qy[2][2] * Qy[2][2])))
+            z = np.arctan2(Qz[0][0], Qz[1][0])
+            print("AxisX: ", x)
+            print("AxisY: ", y)
+            print("AxisZ: ", z)
+            print('*' * 80)
 
             gaze = "Looking: "
             if angles[1] < -15:
