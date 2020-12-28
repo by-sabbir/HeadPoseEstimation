@@ -6,6 +6,9 @@ import dlib
 import argparse
 import numpy as np
 
+#import Face Recognition
+import face_recognition
+
 # helper modules
 from drawFace import draw
 import reference_world as world
@@ -20,14 +23,15 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-f", "--focal",
                     type=float,
                     help="Callibrated Focal Length of the camera")
-
-args = parser.parse_args()
+parser.add_argument("-s", "--camsource", type=int, default=0,
+	help="Enter the camera source")
+args = vars(parser.parse_args())
 
 def main(source=0):
     detector = dlib.get_frontal_face_detector()
     predictor = dlib.shape_predictor(PREDICTOR_PATH)
 
-    cap = cv2.VideoCapture(source)
+    cap = cv2.VideoCapture(args["camsource"])
 
     while True:
         GAZE = "Face Not Found"
@@ -36,19 +40,32 @@ def main(source=0):
             print(f"[ERROR - System]Cannot read from source: {source}")
             break
 
-        faces = detector(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), 0)
+        #faces = detector(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), 0)
+        faces = face_recognition.face_locations(img, model="cnn")
 
         face3Dmodel = world.ref3DModel()
 
         for face in faces:
-            shape = predictor(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), face)
+
+            #Extracting the co cordinates to convert them into dlib rectangle object
+            x = int(face[3])
+            y = int(face[0])
+            w = int(abs(face[1]-x))
+            h = int(abs(face[2]-y))
+            u=int(face[1])
+            v=int(face[2])
+
+            newrect = dlib.rectangle(x,y,u,v)
+            cv2.rectangle(img, (x, y), (x+w, y+h),
+            (0, 255, 0), 2)
+            shape = predictor(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), newrect)
 
             draw(img, shape)
 
             refImgPts = world.ref2dImagePoints(shape)
 
             height, width, channels = img.shape
-            focalLength = args.focal * width
+            focalLength = args["focal"] * width
             cameraMatrix = world.cameraMatrix(focalLength, (height / 2, width / 2))
 
             mdists = np.zeros((4, 1), dtype=np.float64)
@@ -100,3 +117,4 @@ def main(source=0):
 if __name__ == "__main__":
     # path to your video file or camera serial
     main("test.mp4")
+
