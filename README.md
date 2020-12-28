@@ -22,6 +22,9 @@ python head_pose_from_image.py -h
 #### Get Pose From Webcame
 ```
 python head_pose_from_webcam.py -h
+
+#### For source 0 and focal length 1
+python head_pose_from_webcam.py -f 1 -s 0
 ```
 #### 3D model visualization
 ```
