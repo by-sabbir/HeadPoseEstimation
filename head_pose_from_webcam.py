@@ -25,10 +25,10 @@ parser.add_argument("-f", "--focal",
                     help="Callibrated Focal Length of the camera")
 parser.add_argument("-s", "--camsource", type=int, default=0,
 	help="Enter the camera source")
+
 args = vars(parser.parse_args())
 
-def main(source=0):
-    detector = dlib.get_frontal_face_detector()
+def main():
     predictor = dlib.shape_predictor(PREDICTOR_PATH)
 
     cap = cv2.VideoCapture(args["camsource"])
@@ -116,5 +116,4 @@ def main(source=0):
 
 if __name__ == "__main__":
     # path to your video file or camera serial
-    main("test.mp4")
-
+    main()
