@@ -13,7 +13,7 @@ __pycache__/
 
 # C extensions
 *.so
-
+*.jpg
 # Distribution / packaging
 .Python
 build/
