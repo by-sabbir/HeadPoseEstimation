@@ -28,6 +28,8 @@ parser.add_argument("-s", "--camsource", type=int, default=0,
 
 args = vars(parser.parse_args())
 
+face3Dmodel = world.ref3DModel()
+
 def main():
     predictor = dlib.shape_predictor(PREDICTOR_PATH)
 
@@ -42,8 +44,6 @@ def main():
 
         #faces = detector(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), 0)
         faces = face_recognition.face_locations(img, model="cnn")
-
-        face3Dmodel = world.ref3DModel()
 
         for face in faces:
 
