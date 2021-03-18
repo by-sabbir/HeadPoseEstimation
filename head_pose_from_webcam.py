@@ -39,7 +39,7 @@ def main():
         GAZE = "Face Not Found"
         ret, img = cap.read()
         if not ret:
-            print(f"[ERROR - System]Cannot read from source: {args["camsource"]}")
+            print(f'[ERROR - System]Cannot read from source: {args["camsource"]}')
             break
 
         #faces = detector(cv2.cvtColor(img, cv2.COLOR_BGR2RGB), 0)
