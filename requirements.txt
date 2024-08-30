@@ -6,7 +6,7 @@ kiwisolver==1.2.0
 matplotlib==3.2.2
 mccabe==0.6.1
 numpy==1.22.0
-opencv-contrib-python==4.2.0.34
+opencv-contrib-python==4.8.1.78
 pycodestyle==2.6.0
 pyflakes==2.2.0
 pyparsing==2.4.7
